@@ -9,4 +9,4 @@ boumayak@students.zhaw.ch
 marinteo@studnets.zhaw.ch
 weissma8@students.zhaw.ch
 
-Link to the app: https://bmi-rechner-v3.streamlit.app
+Link to the app: 
