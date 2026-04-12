@@ -80,12 +80,3 @@ Die Roadmap zeigt, in welcher Reihenfolge Funktionen entwickelt werden, sodass j
 
 ---
 
-## Prinzipien der Roadmap
-
-- Jede Version ist **lauffähig**
-- Pro Version wird **genau eine Funktion hinzugefügt**
-- Fokus auf:
-  - schnelle Nutzung (Laboralltag)
-  - einfache Bedienung
-  - Vertrauen & Verständnis
-  - Lernen nebenbei
