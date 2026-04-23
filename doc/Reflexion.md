@@ -1,0 +1,1 @@
+home.py wurde für die app angepasst. Eingabe für Bakterien und Antibiotika Optionen wurden erstellt.Läuft jedoch leider noch nicht, da stremlit authenticator als nicht vorhanden angegeben wird und darum nicht importiert werden kann. Müssen in der nächsten Übungsstunde Hilfe hollen.
