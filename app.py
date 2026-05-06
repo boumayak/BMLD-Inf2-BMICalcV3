@@ -21,7 +21,7 @@ if 'data_df' not in st.session_state:
         parse_dates=['timestamp']       # Parse timestamp as datetime
     )
 # --- END OF CODE UPDATE ---
-
+#st.set_page_config(page_title="BMI Rechner", page_icon=":material/monitor_weight:")
 
 
 pg_home = st.Page("views/home.py", title="Home", icon=":material/home:", default=True)

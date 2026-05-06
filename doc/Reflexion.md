@@ -1,1 +1,2 @@
 home.py wurde für die app angepasst. Eingabe für Bakterien und Antibiotika Optionen wurden erstellt.Läuft jedoch leider noch nicht, da stremlit authenticator als nicht vorhanden angegeben wird und darum nicht importiert werden kann. Müssen in der nächsten Übungsstunde Hilfe hollen.
+06.05.26 Streamlit läuft nun ohne Fehlermeldung. Das Login funktioniert wie auch funktion von Bakterien angabe, Alter und infektionsort. 
