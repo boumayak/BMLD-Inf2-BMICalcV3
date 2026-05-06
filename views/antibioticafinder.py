@@ -3,8 +3,7 @@ import streamlit as st
 
 
 
- page_title="Antibiotika Empfehlung",
- page_icon="🧪"
+
 
 
 st.title('🧪 Antibiotika Empfehlung')
