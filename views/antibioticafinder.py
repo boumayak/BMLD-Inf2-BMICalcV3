@@ -1,11 +1,11 @@
 import pandas as pd
 import streamlit as st
 
-# ✅ Muss ganz am Anfang stehen
-st.set_page_config(
-    page_title="Antibiotika Empfehlung",
-    page_icon="🧪"
-)
+
+
+ page_title="Antibiotika Empfehlung",
+ page_icon="🧪"
+
 
 st.title('🧪 Antibiotika Empfehlung')
 
