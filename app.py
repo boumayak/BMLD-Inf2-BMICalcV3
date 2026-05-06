@@ -22,10 +22,10 @@ if 'data_df' not in st.session_state:
     )
 # --- END OF CODE UPDATE ---
 
-st.set_page_config(page_title="BMI Rechner", page_icon=":material/monitor_weight:")
+#st.set_page_config(page_title="BMI Rechner", page_icon=":material/monitor_weight:")
 
 pg_home = st.Page("views/home.py", title="Home", icon=":material/home:", default=True)
-pg_calculator = st.Page("views/calculator.py", title="BMI-Rechner", icon=":material/calculate:")
+pg_calculator = st.Page("views/antibioticafinder.py", title="Antibiotika-Empfehlung", icon=":material/calculate:")
 pg_viz  = st.Page("views/viz.py",  title="BMI Grafik",  icon=":material/show_chart:")
 
 pg = st.navigation([pg_home, pg_calculator, pg_viz])
