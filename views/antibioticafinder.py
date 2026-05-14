@@ -7,12 +7,6 @@ from datetime import datetime
 # KONFIGURATION
 # =========================================================
 
-st.set_page_config(
-    page_title="Antibiotika Empfehlungssystem",
-    page_icon="🧪",
-    layout="wide"
-)
-
 
 # =========================================================
 # DATENBANK
