@@ -602,20 +602,265 @@ if seite == "Empfehlungssystem":
                 )
 
             # Lernmodus
-            if lernmodus:
+            # ================================================
 
-                st.markdown(
-                    "### Lernmodus"
-                )
+if lernmodus:
 
-                st.info(
-                    "Die Antibiotikawahl "
-                    "hängt von Bakterium, "
-                    "Infektionsort, "
-                    "Allergien und "
-                    "Resistenzen ab."
-                )
+    st.markdown("## Erweiterter Lernmodus")
 
+    st.info(
+        f"""
+        Die Auswahl eines Antibiotikums
+        basiert auf mehreren medizinischen Faktoren.
+        """
+    )
+
+    # ---------------------------------------------
+    # Basisinformationen
+    # ---------------------------------------------
+
+    st.markdown("### Analyse")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.write(
+            f"**Bakterium:** {bakterium}"
+        )
+
+        st.write(
+            f"**Infektionsort:** {infektion}"
+        )
+
+        st.write(
+            f"**Empfohlenes Medikament:** "
+            f"{antibiotikum}"
+        )
+
+    with col2:
+
+        st.write(
+            f"**Wirkstoff:** "
+            f"{details['Wirkstoff']}"
+        )
+
+        st.write(
+            f"**Dosierung:** "
+            f"{details['Dosierung']}"
+        )
+
+        st.write(
+            f"**Resistenzlage:** "
+            f"{details['Resistenz']}"
+        )
+
+    st.markdown("---")
+
+    # ---------------------------------------------
+    # Warum wurde das Medikament gewählt?
+    # ---------------------------------------------
+
+    st.markdown("### Warum diese Empfehlung?")
+
+    st.success(
+        details["Warum"]
+    )
+
+    st.markdown("---")
+
+    # ---------------------------------------------
+    # Resistenzbewertung
+    # ---------------------------------------------
+
+    st.markdown("### Resistenzbewertung")
+
+    if details["Resistenz"] == "Niedrig":
+
+        st.success(
+            """
+            Niedrige Resistenzlage:
+            Das Antibiotikum wirkt aktuell
+            noch zuverlässig gegen viele
+            Bakterienstämme.
+            """
+        )
+
+    elif details["Resistenz"] == "Mittel":
+
+        st.warning(
+            """
+            Mittlere Resistenzlage:
+            Erste Resistenzen treten bereits auf.
+            Antibiotika sollten gezielt eingesetzt werden.
+            """
+        )
+
+    else:
+
+        st.error(
+            """
+            Hohe Resistenzlage:
+            Dieses Antibiotikum sollte
+            nur vorsichtig verwendet werden.
+            """
+        )
+
+    st.markdown("---")
+
+    # ---------------------------------------------
+    # Allergiehinweise
+    # ---------------------------------------------
+
+    st.markdown("### Allergieprüfung")
+
+    if allergie == "Penicillin":
+
+        st.warning(
+            """
+            Wegen einer Penicillinallergie
+            wurde eine alternative Therapie gewählt.
+            """
+        )
+
+    elif allergie == "Andere":
+
+        st.info(
+            """
+            Andere Allergien angegeben.
+            Wechselwirkungen prüfen.
+            """
+        )
+
+    else:
+
+        st.success(
+            """
+            Keine bekannte Antibiotikaallergie.
+            """
+        )
+
+    st.markdown("---")
+
+    # ---------------------------------------------
+    # Altersrisiko
+    # ---------------------------------------------
+
+    st.markdown("### Patientenrisiko")
+
+    if alter >= 65:
+
+        st.error(
+            """
+            Ältere Patienten besitzen
+            ein erhöhtes Risiko für:
+
+            • Nebenwirkungen
+            • Nierenprobleme
+            • Wechselwirkungen
+            """
+        )
+
+    elif alter >= 40:
+
+        st.warning(
+            """
+            Mittleres Risiko.
+            Regelmäßige Kontrolle empfohlen.
+            """
+        )
+
+    else:
+
+        st.success(
+            """
+            Niedriges altersabhängiges Risiko.
+            """
+        )
+
+    st.markdown("---")
+
+    # ---------------------------------------------
+    # Interaktionen
+    # ---------------------------------------------
+
+    st.markdown("### Wichtige Hinweise")
+
+    st.info(
+        details["Interaktionen"]
+    )
+
+    st.markdown("---")
+
+    # ---------------------------------------------
+    # Lernkarten
+    # ---------------------------------------------
+
+    st.markdown("## Medizinische Lernkarten")
+
+    with st.expander("Was bedeutet Resistenz?"):
+
+        st.write(
+            """
+            Bakterien können gegen
+            Antibiotika unempfindlich werden.
+            Dadurch wirken Medikamente schlechter.
+            """
+        )
+
+    with st.expander("Warum sind Allergien wichtig?"):
+
+        st.write(
+            """
+            Manche Antibiotika können
+            schwere allergische Reaktionen auslösen.
+            """
+        )
+
+    with st.expander("Warum ist die Dosierung wichtig?"):
+
+        st.write(
+            """
+            Eine falsche Dosierung kann
+            Resistenzen fördern oder
+            Nebenwirkungen verursachen.
+            """
+        )
+
+    with st.expander("Warum sind Resistenzen gefährlich?"):
+
+        st.write(
+            """
+            Multiresistente Bakterien sind
+            schwer behandelbar und weltweit
+            ein großes medizinisches Problem.
+            """
+        )
+
+    st.markdown("---")
+
+    # ---------------------------------------------
+    # Mini Quiz
+    # ---------------------------------------------
+
+    st.markdown("## Mini Quiz")
+
+    quiz = st.radio(
+        "Wofür steht MRSA?",
+        [
+            "Multiresistenter Staphylococcus aureus",
+            "Medizinische Resistenz Standard Analyse",
+            "Mikrobiologische Reaktions Stoff Analyse"
+        ]
+    )
+
+    if quiz == "Multiresistenter Staphylococcus aureus":
+
+        st.success(" Richtig beantwortet")
+
+    else:
+
+        st.error("❌ Leider falsch")
     # =====================================================
     # TAB 2
     # =====================================================
