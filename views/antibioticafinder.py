@@ -607,7 +607,7 @@ if seite == "Empfehlungssystem":
 
             if lernmodus:
 
-                st.markdown("## 📚 Erweiterter Lernmodus")
+                st.markdown("## Erweiterter Lernmodus")
 
                 st.info(
                     """
