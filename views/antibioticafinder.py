@@ -602,9 +602,8 @@ if seite == "Empfehlungssystem":
                 )
 
             # Lernmodus
-            # ================================================
-
-if lernmodus:
+        
+    if lernmodus:
 
     st.markdown("## Erweiterter Lernmodus")
 
@@ -916,7 +915,9 @@ elif seite == "Statistik":
 
     st.title("Statistik")
 
-    statistik_dashboard()
+    statistik_dashboard()================================================
+
+
 
 
 # =========================================================
