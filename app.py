@@ -29,4 +29,4 @@ pg_calculator = st.Page("views/antibioticafinder.py", title="Antibiotika-Empfehl
 pg_viz  = st.Page("views/viz.py",  title="BMI Grafik",  icon=":material/show_chart:")
 
 pg = st.navigation([pg_home, pg_calculator, pg_viz])
-pg.run()
+
