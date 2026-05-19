@@ -892,7 +892,7 @@ elif seite == "Statistik":
 
     st.title("Statistik")
 
-    statistik_dashboard()================================================
+    statistik_dashboard()
 
 
 
