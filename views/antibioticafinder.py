@@ -172,28 +172,6 @@ antibiotika_df = pd.DataFrame([
         "Interaktionen": "QT-Zeit Verlängerung",
         "Warum": "Sehr wirksam gegen Legionellen",
         "Resistenz": "Niedrig"
-    },
-
-    {
-        "Name": "Meropenem",
-        "Bakterium": "ESBL-bildende Enterobakterien",
-        "Infektion": "Krankenhausinfektion",
-        "Wirkstoff": "Carbapenem",
-        "Dosierung": "1 g 3x täglich",
-        "Interaktionen": "Krampfschwelle beachten",
-        "Warum": "Reserveantibiotikum bei ESBL",
-        "Resistenz": "Niedrig"
-    },
-
-    {
-        "Name": "Breitbandantibiotikum",
-        "Bakterium": "Unbekannt",
-        "Infektion": "Alle",
-        "Wirkstoff": "Variabel",
-        "Dosierung": "Abhängig vom Präparat",
-        "Interaktionen": "Individuell prüfen",
-        "Warum": "Wenn Erreger unbekannt ist",
-        "Resistenz": "Hoch"
     }
 
 ])
@@ -251,15 +229,64 @@ def hole_details(name):
     return None
 
 
-def berechne_risiko(alter):
+# =========================================================
+# ERWEITERTE RISIKOANALYSE
+# =========================================================
 
+def berechne_risiko(
+    alter,
+    nierenerkrankung,
+    schwangerschaft,
+    immunschwäche,
+    allergie,
+    mehrere_medikamente,
+    resistenz
+):
+
+    punkte = 0
+
+    # Alter
     if alter >= 65:
-        return "Hoch"
+        punkte += 3
 
     elif alter >= 40:
-        return "Mittel"
+        punkte += 1
 
-    return "Niedrig"
+    # Nierenfunktion
+    if nierenerkrankung:
+        punkte += 3
+
+    # Schwangerschaft
+    if schwangerschaft:
+        punkte += 2
+
+    # Immunschwäche
+    if immunschwäche:
+        punkte += 3
+
+    # Allergie
+    if allergie != "Keine":
+        punkte += 1
+
+    # Viele Medikamente
+    if mehrere_medikamente:
+        punkte += 2
+
+    # Resistenzlage
+    if resistenz == "Hoch":
+        punkte += 3
+
+    elif resistenz == "Mittel":
+        punkte += 1
+
+    # Ergebnis
+    if punkte >= 8:
+        return "Hoch", punkte
+
+    elif punkte >= 4:
+        return "Mittel", punkte
+
+    return "Niedrig", punkte
 
 
 def zeige_resistenz(resistenz):
@@ -296,7 +323,6 @@ seite = st.sidebar.radio(
     [
         "Empfehlungssystem",
         "Statistik",
-        "Lernbereich",
         "Verlauf"
     ]
 )
@@ -337,14 +363,14 @@ if seite == "Empfehlungssystem":
                     antibiotika_df["Bakterium"].unique()
                 )
 
-            with col2:
-
                 alter = st.number_input(
                     "Alter",
                     min_value=0,
                     max_value=120,
                     value=30
                 )
+
+            with col2:
 
                 allergie = st.selectbox(
                     "Allergie",
@@ -355,9 +381,21 @@ if seite == "Empfehlungssystem":
                     ]
                 )
 
-            lernmodus = st.toggle(
-                "Lernmodus aktivieren"
-            )
+                nierenerkrankung = st.checkbox(
+                    "Nierenerkrankung"
+                )
+
+                schwangerschaft = st.checkbox(
+                    "Schwangerschaft"
+                )
+
+                immunschwäche = st.checkbox(
+                    "Immunschwäche"
+                )
+
+                mehrere_medikamente = st.checkbox(
+                    "Mehrere Medikamente"
+                )
 
             submitted = st.form_submit_button(
                 "Empfehlung anzeigen"
@@ -378,8 +416,14 @@ if seite == "Empfehlungssystem":
                 antibiotikum
             )
 
-            risiko = berechne_risiko(
-                alter
+            risiko, punkte = berechne_risiko(
+                alter,
+                nierenerkrankung,
+                schwangerschaft,
+                immunschwäche,
+                allergie,
+                mehrere_medikamente,
+                details["Resistenz"]
             )
 
             resultat = {
@@ -401,6 +445,9 @@ if seite == "Empfehlungssystem":
 
                 "Risiko":
                     risiko,
+
+                "Punkte":
+                    punkte,
 
                 "Empfehlung":
                     antibiotikum
@@ -447,85 +494,54 @@ if seite == "Empfehlungssystem":
                     f"{details['Warum']}"
                 )
 
-            st.markdown("## Resistenzbewertung")
+            st.markdown("---")
+
+            st.markdown("## ⚠ Risikoanalyse")
+
+            st.write(
+                f"**Risiko-Score:** {punkte} Punkte"
+            )
+
+            if risiko == "Hoch":
+
+                st.error(
+                    """
+                    🔴 Hohes Risiko
+
+                    Erhöhtes Risiko für:
+                    - Nebenwirkungen
+                    - Wechselwirkungen
+                    - Komplikationen
+                    """
+                )
+
+            elif risiko == "Mittel":
+
+                st.warning(
+                    """
+                    🟡 Mittleres Risiko
+
+                    Regelmäßige Kontrolle empfohlen.
+                    """
+                )
+
+            else:
+
+                st.success(
+                    """
+                    🟢 Niedriges Risiko
+
+                    Keine besonderen Risikofaktoren erkannt.
+                    """
+                )
+
+            st.markdown("---")
+
+            st.markdown("## 🧪 Resistenzbewertung")
 
             zeige_resistenz(
                 details["Resistenz"]
             )
-
-            st.markdown("## Risikoanalyse")
-
-            if risiko == "Hoch":
-                st.error("⚠ Hohes Risiko")
-
-            elif risiko == "Mittel":
-                st.warning("⚠ Mittleres Risiko")
-
-            else:
-                st.success("✅ Niedriges Risiko")
-
-            # Lernmodus
-            if lernmodus:
-
-                st.markdown("---")
-
-                st.markdown("# 📚 Lernmodus")
-
-                st.info(
-                    """
-                    Antibiotika werden abhängig
-                    von Bakterium, Resistenz,
-                    Allergien und Infektionsort
-                    ausgewählt.
-                    """
-                )
-
-                with st.expander(
-                    "Was bedeutet Resistenz?"
-                ):
-                    st.write(
-                        """
-                        Manche Bakterien können
-                        gegen Antibiotika
-                        unempfindlich werden.
-                        """
-                    )
-
-                with st.expander(
-                    "Warum sind Allergien wichtig?"
-                ):
-                    st.write(
-                        """
-                        Allergien können schwere
-                        Nebenwirkungen auslösen.
-                        """
-                    )
-
-                with st.expander(
-                    "Was ist MRSA?"
-                ):
-                    st.write(
-                        """
-                        MRSA bedeutet:
-                        Multiresistenter
-                        Staphylococcus aureus.
-                        """
-                    )
-
-                quiz = st.radio(
-                    "Welches Antibiotikum gehört zur Gruppe der Makrolide?",
-                    [
-                        "Azithromycin",
-                        "Penicillin",
-                        "Vancomycin"
-                    ]
-                )
-
-                if quiz == "Azithromycin":
-                    st.success("✅ Richtig!")
-
-                else:
-                    st.error("❌ Leider falsch.")
 
     # =====================================================
     # TAB 2 - BAKTERIENSUCHE
@@ -540,7 +556,7 @@ if seite == "Empfehlungssystem":
         )
 
         infektion_filter = st.selectbox(
-            "Nach Infektion filtern",
+            "Infektion filtern",
             ["Alle"] +
             list(
                 antibiotika_df["Infektion"]
@@ -549,8 +565,13 @@ if seite == "Empfehlungssystem":
         )
 
         resistenz_filter = st.selectbox(
-            "Nach Resistenz filtern",
-            ["Alle", "Niedrig", "Mittel", "Hoch"]
+            "Resistenz filtern",
+            [
+                "Alle",
+                "Niedrig",
+                "Mittel",
+                "Hoch"
+            ]
         )
 
         gefiltert = antibiotika_df.copy()
@@ -566,7 +587,7 @@ if seite == "Empfehlungssystem":
                 )
             ]
 
-        # Infektionsfilter
+        # Infektion
         if infektion_filter != "Alle":
 
             gefiltert = gefiltert[
@@ -574,7 +595,7 @@ if seite == "Empfehlungssystem":
                 == infektion_filter
             ]
 
-        # Resistenzfilter
+        # Resistenz
         if resistenz_filter != "Alle":
 
             gefiltert = gefiltert[
@@ -582,14 +603,10 @@ if seite == "Empfehlungssystem":
                 == resistenz_filter
             ]
 
-        st.markdown("---")
-
         st.dataframe(
             gefiltert,
             use_container_width=True
         )
-
-        st.markdown("### Anzahl Treffer")
 
         st.metric(
             "Gefundene Einträge",
@@ -617,7 +634,7 @@ elif seite == "Statistik":
 
         with col1:
             st.metric(
-                "Anzahl Abfragen",
+                "Abfragen",
                 len(df)
             )
 
@@ -641,62 +658,18 @@ elif seite == "Statistik":
             "Empfehlungen"
         )
 
-        empfehlungen = (
+        st.bar_chart(
             df["Empfehlung"]
             .value_counts()
         )
-
-        st.bar_chart(empfehlungen)
 
         st.subheader(
             "Risikoanalyse"
         )
 
-        risiko = (
+        st.bar_chart(
             df["Risiko"]
             .value_counts()
-        )
-
-        st.bar_chart(risiko)
-
-
-# =========================================================
-# LERNBEREICH
-# =========================================================
-
-elif seite == "Lernbereich":
-
-    st.title("📚 Lernbereich")
-
-    with st.expander("Wirkstoff"):
-        st.write(
-            "Der aktive Bestandteil eines Medikaments."
-        )
-
-    with st.expander("Dosierung"):
-        st.write(
-            "Menge und Häufigkeit der Einnahme."
-        )
-
-    with st.expander("MRSA"):
-        st.write(
-            "Multiresistenter Staphylococcus aureus."
-        )
-
-    with st.expander("ESBL"):
-        st.write(
-            """
-            Bakterien mit erweiterten
-            Beta-Lactamasen.
-            """
-        )
-
-    with st.expander("Breitbandantibiotikum"):
-        st.write(
-            """
-            Wirkt gegen viele verschiedene
-            Bakterienarten.
-            """
         )
 
 
@@ -723,9 +696,7 @@ elif seite == "Verlauf":
             use_container_width=True
         )
 
-        csv = df.to_csv(
-            index=False
-        )
+        csv = df.to_csv(index=False)
 
         st.download_button(
             label="⬇ CSV herunterladen",
