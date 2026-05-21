@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 
-
 # =========================================================
 # SEITENKONFIGURATION
 # =========================================================
@@ -12,7 +11,6 @@ st.set_page_config(
     page_icon="🦠",
     layout="wide"
 )
-
 
 # =========================================================
 # DATENBANK
@@ -128,54 +126,9 @@ antibiotika_df = pd.DataFrame([
         "Interaktionen": "Nierenfunktion beachten",
         "Warum": "Breit wirksam gegen Pseudomonas",
         "Resistenz": "Hoch"
-    },
-
-    {
-        "Name": "Metronidazol",
-        "Bakterium": "Clostridium difficile",
-        "Infektion": "Magen-Darm",
-        "Wirkstoff": "Nitroimidazol",
-        "Dosierung": "500 mg 3x täglich",
-        "Interaktionen": "Kein Alkohol",
-        "Warum": "Wirksam gegen anaerobe Bakterien",
-        "Resistenz": "Mittel"
-    },
-
-    {
-        "Name": "Ciprofloxacin",
-        "Bakterium": "Salmonella",
-        "Infektion": "Magen-Darm",
-        "Wirkstoff": "Fluorchinolon",
-        "Dosierung": "500 mg 2x täglich",
-        "Interaktionen": "Sehnenprobleme möglich",
-        "Warum": "Gut wirksam gegen Salmonellen",
-        "Resistenz": "Mittel"
-    },
-
-    {
-        "Name": "Amoxicillin",
-        "Bakterium": "Haemophilus influenzae",
-        "Infektion": "Atemwege",
-        "Wirkstoff": "Aminopenicillin",
-        "Dosierung": "750 mg 3x täglich",
-        "Interaktionen": "Allergische Reaktionen möglich",
-        "Warum": "Häufig bei Atemwegsinfekten",
-        "Resistenz": "Mittel"
-    },
-
-    {
-        "Name": "Levofloxacin",
-        "Bakterium": "Legionella pneumophila",
-        "Infektion": "Atemwege",
-        "Wirkstoff": "Fluorchinolon",
-        "Dosierung": "500 mg täglich",
-        "Interaktionen": "QT-Zeit Verlängerung",
-        "Warum": "Sehr wirksam gegen Legionellen",
-        "Resistenz": "Niedrig"
     }
 
 ])
-
 
 # =========================================================
 # SESSION STATE
@@ -183,7 +136,6 @@ antibiotika_df = pd.DataFrame([
 
 if "verlauf_df" not in st.session_state:
     st.session_state["verlauf_df"] = pd.DataFrame()
-
 
 # =========================================================
 # FUNKTIONEN
@@ -201,7 +153,6 @@ def antibiotika_empfehlung(bakterium, allergie):
     else:
         antibiotikum = daten.iloc[0]["Name"]
 
-    # Penicillinallergie prüfen
     if allergie == "Penicillin":
 
         if antibiotikum in [
@@ -245,41 +196,33 @@ def berechne_risiko(
 
     punkte = 0
 
-    # Alter
     if alter >= 65:
         punkte += 3
 
     elif alter >= 40:
         punkte += 1
 
-    # Nierenfunktion
     if nierenerkrankung:
         punkte += 3
 
-    # Schwangerschaft
     if schwangerschaft:
         punkte += 2
 
-    # Immunschwäche
     if immunschwäche:
         punkte += 3
 
-    # Allergie
     if allergie != "Keine":
         punkte += 1
 
-    # Viele Medikamente
     if mehrere_medikamente:
         punkte += 2
 
-    # Resistenzlage
     if resistenz == "Hoch":
         punkte += 3
 
     elif resistenz == "Mittel":
         punkte += 1
 
-    # Ergebnis
     if punkte >= 8:
         return "Hoch", punkte
 
@@ -311,7 +254,6 @@ def speichere_verlauf(resultat):
         ignore_index=True
     )
 
-
 # =========================================================
 # SIDEBAR
 # =========================================================
@@ -323,10 +265,10 @@ seite = st.sidebar.radio(
     [
         "Empfehlungssystem",
         "Statistik",
+        "Lernbereich",
         "Verlauf"
     ]
 )
-
 
 # =========================================================
 # EMPFEHLUNGSSYSTEM
@@ -396,6 +338,10 @@ if seite == "Empfehlungssystem":
                 mehrere_medikamente = st.checkbox(
                     "Mehrere Medikamente"
                 )
+
+            lernmodus = st.toggle(
+                "📚 Lernmodus aktivieren"
+            )
 
             submitted = st.form_submit_button(
                 "Empfehlung anzeigen"
@@ -468,30 +414,25 @@ if seite == "Empfehlungssystem":
             with col1:
 
                 st.write(
-                    f"**Wirkstoff:** "
-                    f"{details['Wirkstoff']}"
+                    f"**Wirkstoff:** {details['Wirkstoff']}"
                 )
 
                 st.write(
-                    f"**Dosierung:** "
-                    f"{details['Dosierung']}"
+                    f"**Dosierung:** {details['Dosierung']}"
                 )
 
                 st.write(
-                    f"**Resistenz:** "
-                    f"{details['Resistenz']}"
+                    f"**Resistenz:** {details['Resistenz']}"
                 )
 
             with col2:
 
                 st.write(
-                    f"**Interaktionen:** "
-                    f"{details['Interaktionen']}"
+                    f"**Interaktionen:** {details['Interaktionen']}"
                 )
 
                 st.write(
-                    f"**Warum empfohlen?:** "
-                    f"{details['Warum']}"
+                    f"**Warum empfohlen?:** {details['Warum']}"
                 )
 
             st.markdown("---")
@@ -506,12 +447,7 @@ if seite == "Empfehlungssystem":
 
                 st.error(
                     """
-                    🔴 Hohes Risiko
-
-                    Erhöhtes Risiko für:
-                    - Nebenwirkungen
-                    - Wechselwirkungen
-                    - Komplikationen
+                    🔴 Hohes Risiko erkannt
                     """
                 )
 
@@ -519,9 +455,7 @@ if seite == "Empfehlungssystem":
 
                 st.warning(
                     """
-                    🟡 Mittleres Risiko
-
-                    Regelmäßige Kontrolle empfohlen.
+                    🟡 Mittleres Risiko erkannt
                     """
                 )
 
@@ -529,9 +463,7 @@ if seite == "Empfehlungssystem":
 
                 st.success(
                     """
-                    🟢 Niedriges Risiko
-
-                    Keine besonderen Risikofaktoren erkannt.
+                    🟢 Niedriges Risiko erkannt
                     """
                 )
 
@@ -542,6 +474,203 @@ if seite == "Empfehlungssystem":
             zeige_resistenz(
                 details["Resistenz"]
             )
+
+            # =================================================
+            # LERNMODUS
+            # =================================================
+
+            if lernmodus:
+
+                st.markdown("---")
+
+                st.header("📚 Erweiterter Lernmodus")
+
+                st.info(
+                    """
+                    Die Auswahl eines Antibiotikums basiert auf:
+                    - Bakterium
+                    - Infektionsort
+                    - Resistenzlage
+                    - Allergien
+                    - Patientenrisiko
+                    """
+                )
+
+                # =============================================
+                # ANALYSE
+                # =============================================
+
+                st.subheader("🦠 Analyse")
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+
+                    st.write(
+                        f"**Bakterium:** {bakterium}"
+                    )
+
+                    st.write(
+                        f"**Infektion:** {infektion}"
+                    )
+
+                    st.write(
+                        f"**Empfohlenes Medikament:** {antibiotikum}"
+                    )
+
+                with col2:
+
+                    st.write(
+                        f"**Wirkstoff:** {details['Wirkstoff']}"
+                    )
+
+                    st.write(
+                        f"**Dosierung:** {details['Dosierung']}"
+                    )
+
+                    st.write(
+                        f"**Resistenz:** {details['Resistenz']}"
+                    )
+
+                st.markdown("---")
+
+                # =============================================
+                # WARUM
+                # =============================================
+
+                st.subheader("💡 Warum diese Empfehlung?")
+
+                st.success(
+                    details["Warum"]
+                )
+
+                st.markdown("---")
+
+                # =============================================
+                # RISIKOFAKTOREN
+                # =============================================
+
+                st.subheader("⚠ Erkannte Risikofaktoren")
+
+                if alter >= 65:
+                    st.warning("Hohes Alter")
+
+                if nierenerkrankung:
+                    st.warning("Nierenerkrankung")
+
+                if schwangerschaft:
+                    st.warning("Schwangerschaft")
+
+                if immunschwäche:
+                    st.warning("Immunschwäche")
+
+                if mehrere_medikamente:
+                    st.warning("Viele Medikamente")
+
+                if allergie != "Keine":
+                    st.warning("Allergie vorhanden")
+
+                if punkte == 0:
+                    st.success(
+                        "Keine Risikofaktoren erkannt"
+                    )
+
+                st.markdown("---")
+
+                # =============================================
+                # INTERAKTIONEN
+                # =============================================
+
+                st.subheader("💊 Interaktionen")
+
+                st.info(
+                    details["Interaktionen"]
+                )
+
+                st.markdown("---")
+
+                # =============================================
+                # LERNKARTEN
+                # =============================================
+
+                st.subheader("🧠 Medizinische Lernkarten")
+
+                with st.expander(
+                    "Was bedeutet Resistenz?"
+                ):
+
+                    st.write(
+                        """
+                        Bakterien können gegen Antibiotika
+                        unempfindlich werden.
+                        """
+                    )
+
+                with st.expander(
+                    "Warum sind Allergien wichtig?"
+                ):
+
+                    st.write(
+                        """
+                        Allergien können gefährliche
+                        Reaktionen auslösen.
+                        """
+                    )
+
+                with st.expander(
+                    "Warum ist Dosierung wichtig?"
+                ):
+
+                    st.write(
+                        """
+                        Falsche Dosierungen fördern
+                        Resistenzen.
+                        """
+                    )
+
+                with st.expander(
+                    "Was bedeutet MRSA?"
+                ):
+
+                    st.write(
+                        """
+                        MRSA bedeutet:
+                        Multiresistenter
+                        Staphylococcus aureus.
+                        """
+                    )
+
+                st.markdown("---")
+
+                # =============================================
+                # QUIZ
+                # =============================================
+
+                st.subheader("📝 Mini Quiz")
+
+                quiz = st.radio(
+                    "Wofür steht MRSA?",
+                    [
+                        "Multiresistenter Staphylococcus aureus",
+                        "Medizinische Resistenz Analyse",
+                        "Mikrobiologische Standard Analyse"
+                    ]
+                )
+
+                if (
+                    quiz ==
+                    "Multiresistenter Staphylococcus aureus"
+                ):
+
+                    st.success(
+                        "✅ Richtig beantwortet"
+                    )
+
+                else:
+
+                    st.error(
+                        "❌ Leider falsch"
+                    )
 
     # =====================================================
     # TAB 2 - BAKTERIENSUCHE
@@ -576,7 +705,6 @@ if seite == "Empfehlungssystem":
 
         gefiltert = antibiotika_df.copy()
 
-        # Suche
         if suche:
 
             gefiltert = gefiltert[
@@ -587,7 +715,6 @@ if seite == "Empfehlungssystem":
                 )
             ]
 
-        # Infektion
         if infektion_filter != "Alle":
 
             gefiltert = gefiltert[
@@ -595,7 +722,6 @@ if seite == "Empfehlungssystem":
                 == infektion_filter
             ]
 
-        # Resistenz
         if resistenz_filter != "Alle":
 
             gefiltert = gefiltert[
@@ -613,7 +739,6 @@ if seite == "Empfehlungssystem":
             len(gefiltert)
         )
 
-
 # =========================================================
 # STATISTIK
 # =========================================================
@@ -626,25 +751,30 @@ elif seite == "Statistik":
 
     if df.empty:
 
-        st.info("Noch keine Daten vorhanden")
+        st.info(
+            "Noch keine Daten vorhanden"
+        )
 
     else:
 
         col1, col2, col3 = st.columns(3)
 
         with col1:
+
             st.metric(
                 "Abfragen",
                 len(df)
             )
 
         with col2:
+
             st.metric(
                 "Durchschnittsalter",
                 round(df["Alter"].mean(), 1)
             )
 
         with col3:
+
             st.metric(
                 "Häufigstes Bakterium",
                 df["Bakterium"]
@@ -654,24 +784,56 @@ elif seite == "Statistik":
 
         st.markdown("---")
 
-        st.subheader(
-            "Empfehlungen"
-        )
+        st.subheader("Empfehlungen")
 
         st.bar_chart(
             df["Empfehlung"]
             .value_counts()
         )
 
-        st.subheader(
-            "Risikoanalyse"
-        )
+        st.subheader("Risikoanalyse")
 
         st.bar_chart(
             df["Risiko"]
             .value_counts()
         )
 
+# =========================================================
+# LERNBEREICH
+# =========================================================
+
+elif seite == "Lernbereich":
+
+    st.title("📚 Lernbereich")
+
+    with st.expander("Wirkstoff"):
+        st.write(
+            "Aktiver Bestandteil eines Medikaments."
+        )
+
+    with st.expander("Resistenz"):
+        st.write(
+            """
+            Bakterien können gegen Antibiotika
+            resistent werden.
+            """
+        )
+
+    with st.expander("MRSA"):
+        st.write(
+            """
+            Multiresistenter
+            Staphylococcus aureus.
+            """
+        )
+
+    with st.expander("Breitbandantibiotikum"):
+        st.write(
+            """
+            Wirkt gegen viele verschiedene
+            Bakterienarten.
+            """
+        )
 
 # =========================================================
 # VERLAUF
