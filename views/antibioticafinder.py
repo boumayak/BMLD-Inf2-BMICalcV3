@@ -46,7 +46,7 @@ antibiotika_df = pd.DataFrame([
         "Wirkstoff": "Penicillinase-festes Penicillin",
         "Dosierung": "500 mg 4x täglich",
         "Interaktionen": "Leberwerte überwachen",
-        "Warum": "Gut wirksam gegen Staphylokokken",
+        "Warum": "Gut gegen Staphylokokken",
         "Resistenz": "Mittel"
     },
 
@@ -57,13 +57,13 @@ antibiotika_df = pd.DataFrame([
         "Wirkstoff": "Glykopeptid",
         "Dosierung": "1 g 2x täglich",
         "Interaktionen": "Nierenfunktion kontrollieren",
-        "Warum": "Standardtherapie gegen MRSA",
+        "Warum": "Standard gegen MRSA",
         "Resistenz": "Niedrig"
     },
 
     {
         "Name": "Penicillin",
-        "Bakterium": "Streptococcus",
+        "Bakterium": "Streptococcus pyogenes",
         "Infektion": "Atemwege",
         "Wirkstoff": "Beta-Lactam",
         "Dosierung": "1 Mio IE 3x täglich",
@@ -73,13 +73,57 @@ antibiotika_df = pd.DataFrame([
     },
 
     {
-        "Name": "Makrolid (Alternative wegen Allergie)",
-        "Bakterium": "Streptococcus",
+        "Name": "Amoxicillin",
+        "Bakterium": "Haemophilus influenzae",
         "Infektion": "Atemwege",
-        "Wirkstoff": "Azithromycin",
-        "Dosierung": "500 mg 1x täglich",
-        "Interaktionen": "QT-Zeit Verlängerung möglich",
-        "Warum": "Alternative bei Penicillinallergie",
+        "Wirkstoff": "Aminopenicillin",
+        "Dosierung": "750 mg 3x täglich",
+        "Interaktionen": "Allergische Reaktionen möglich",
+        "Warum": "Häufig bei Atemwegsinfekten",
+        "Resistenz": "Mittel"
+    },
+
+    {
+        "Name": "Azithromycin",
+        "Bakterium": "Mycoplasma pneumoniae",
+        "Infektion": "Lunge",
+        "Wirkstoff": "Makrolid",
+        "Dosierung": "500 mg täglich",
+        "Interaktionen": "QT-Zeit überwachen",
+        "Warum": "Gut gegen atypische Pneumonie",
+        "Resistenz": "Mittel"
+    },
+
+    {
+        "Name": "Levofloxacin",
+        "Bakterium": "Legionella pneumophila",
+        "Infektion": "Lunge",
+        "Wirkstoff": "Fluorchinolon",
+        "Dosierung": "500 mg täglich",
+        "Interaktionen": "QT-Zeit Verlängerung",
+        "Warum": "Sehr wirksam gegen Legionellen",
+        "Resistenz": "Niedrig"
+    },
+
+    {
+        "Name": "Doxycyclin",
+        "Bakterium": "Chlamydia trachomatis",
+        "Infektion": "Geschlechtsorgane",
+        "Wirkstoff": "Tetrazyklin",
+        "Dosierung": "100 mg 2x täglich",
+        "Interaktionen": "Nicht mit Milchprodukten",
+        "Warum": "Standard bei Chlamydien",
+        "Resistenz": "Niedrig"
+    },
+
+    {
+        "Name": "Ceftriaxon",
+        "Bakterium": "Neisseria gonorrhoeae",
+        "Infektion": "Geschlechtsorgane",
+        "Wirkstoff": "Cephalosporin",
+        "Dosierung": "500 mg einmalig",
+        "Interaktionen": "Calciumhaltige Lösungen vermeiden",
+        "Warum": "Standard bei Gonorrhoe",
         "Resistenz": "Mittel"
     },
 
@@ -95,25 +139,14 @@ antibiotika_df = pd.DataFrame([
     },
 
     {
-        "Name": "Doxycyclin",
-        "Bakterium": "Chlamydia trachomatis",
-        "Infektion": "Geschlechtsorgane",
-        "Wirkstoff": "Tetrazyklin",
-        "Dosierung": "100 mg 2x täglich",
-        "Interaktionen": "Nicht mit Milchprodukten einnehmen",
-        "Warum": "Standardtherapie bei Chlamydien",
+        "Name": "Meropenem",
+        "Bakterium": "ESBL-bildende Enterobakterien",
+        "Infektion": "Krankenhausinfektion",
+        "Wirkstoff": "Carbapenem",
+        "Dosierung": "1 g 3x täglich",
+        "Interaktionen": "Krampfschwelle beachten",
+        "Warum": "Reserveantibiotikum",
         "Resistenz": "Niedrig"
-    },
-
-    {
-        "Name": "Azithromycin",
-        "Bakterium": "Mycoplasma pneumoniae",
-        "Infektion": "Atemwege",
-        "Wirkstoff": "Makrolid",
-        "Dosierung": "500 mg täglich",
-        "Interaktionen": "QT-Zeit überwachen",
-        "Warum": "Gut bei atypischen Pneumonien",
-        "Resistenz": "Mittel"
     },
 
     {
@@ -123,7 +156,95 @@ antibiotika_df = pd.DataFrame([
         "Wirkstoff": "Breitbandpenicillin",
         "Dosierung": "4,5 g 3x täglich",
         "Interaktionen": "Nierenfunktion beachten",
-        "Warum": "Breit wirksam gegen Pseudomonas",
+        "Warum": "Breit wirksam",
+        "Resistenz": "Hoch"
+    },
+
+    {
+        "Name": "Metronidazol",
+        "Bakterium": "Clostridium difficile",
+        "Infektion": "Magen-Darm",
+        "Wirkstoff": "Nitroimidazol",
+        "Dosierung": "500 mg 3x täglich",
+        "Interaktionen": "Kein Alkohol",
+        "Warum": "Wirksam gegen anaerobe Bakterien",
+        "Resistenz": "Mittel"
+    },
+
+    {
+        "Name": "Ciprofloxacin",
+        "Bakterium": "Salmonella enterica",
+        "Infektion": "Magen-Darm",
+        "Wirkstoff": "Fluorchinolon",
+        "Dosierung": "500 mg 2x täglich",
+        "Interaktionen": "Sehnenprobleme möglich",
+        "Warum": "Gut gegen Salmonellen",
+        "Resistenz": "Mittel"
+    },
+
+    {
+        "Name": "Azithromycin",
+        "Bakterium": "Campylobacter jejuni",
+        "Infektion": "Magen-Darm",
+        "Wirkstoff": "Makrolid",
+        "Dosierung": "500 mg täglich",
+        "Interaktionen": "QT-Zeit überwachen",
+        "Warum": "Wirksam gegen Campylobacter",
+        "Resistenz": "Mittel"
+    },
+
+    {
+        "Name": "Clindamycin",
+        "Bakterium": "Streptococcus mutans",
+        "Infektion": "Zähne",
+        "Wirkstoff": "Lincosamid",
+        "Dosierung": "600 mg 3x täglich",
+        "Interaktionen": "Durchfall möglich",
+        "Warum": "Gut bei Zahninfektionen",
+        "Resistenz": "Mittel"
+    },
+
+    {
+        "Name": "Amoxicillin",
+        "Bakterium": "Enterococcus faecalis",
+        "Infektion": "Herz",
+        "Wirkstoff": "Aminopenicillin",
+        "Dosierung": "1 g 3x täglich",
+        "Interaktionen": "Allergische Reaktionen",
+        "Warum": "Wirksam bei Endokarditis",
+        "Resistenz": "Mittel"
+    },
+
+    {
+        "Name": "Cefazolin",
+        "Bakterium": "Staphylococcus epidermidis",
+        "Infektion": "Implantatinfektion",
+        "Wirkstoff": "Cephalosporin",
+        "Dosierung": "1 g 3x täglich",
+        "Interaktionen": "Nierenfunktion beachten",
+        "Warum": "Gut bei Implantatinfektionen",
+        "Resistenz": "Mittel"
+    },
+
+    {
+        "Name": "Daptomycin",
+        "Bakterium": "VRE",
+        "Infektion": "Blut",
+        "Wirkstoff": "Lipopeptid",
+        "Dosierung": "6 mg/kg täglich",
+        "Interaktionen": "CK-Werte kontrollieren",
+        "Warum": "Reserveantibiotikum gegen VRE",
+        "Resistenz": "Niedrig"
+    },
+
+    {
+        "Name": "Breitbandantibiotikum",
+        "Bakterium": "Unbekannt",
+        "Infektion": "Alle",
+        "Wirkstoff": "Variabel",
+        "Dosierung": "Abhängig vom Präparat",
+        "Interaktionen": "Individuell prüfen",
+        "Warum": "Wenn Erreger unbekannt",
         "Resistenz": "Hoch"
     }
 
