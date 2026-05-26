@@ -340,103 +340,107 @@ if seite == "Empfehlungssystem":
     )
 
     # ================= ANALYSE =================
-    st.subheader("🦠 Analyse")
+st.subheader("🦠 Analyse")
+
+col1, col2 = st.columns(2)
+
+# Falls d nicht existiert
+if "d" not in locals():
     d = {}
-    col1, col2 = st.columns(2)
 
-    with col1:
-        st.write(f"**Bakterium:** {bakterium}")
-        st.write(f"**Infektion:** {infektion}")
-        st.write(f"**Empfehlung:** {d.get('Empfehlung', 'Keine Empfehlung verfügbar')}")
+with col1:
+    st.write(f"**Bakterium:** {bakterium}")
+    st.write(f"**Infektion:** {infektion}")
+    st.write(
+        f"**Empfehlung:** {d.get('Empfehlung', 'Keine Empfehlung verfügbar')}"
+    )
 
-    with col2:
-        st.write(f"**Wirkstoff:** {d['Wirkstoff']}")
-        st.write(f"**Dosierung:** {d['Dosierung']}")
-        st.write(f"**Resistenz:** {d['Resistenz']}")
-        st.write(f"**Medikamentenklasse:** {klasse}")
+with col2:
+    st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
+    st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
+    st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
+    st.write(f"**Medikamentenklasse:** {klasse}")
 
-    st.markdown("---")
+st.markdown("---")
 
-    # ================= WARUM =================
-    st.subheader("💡 Warum diese Therapie?")
+# ================= WARUM =================
+st.subheader("💡 Warum diese Therapie?")
 
-    st.success(d["Warum"])
+st.success(d.get("Warum", "Keine Begründung verfügbar"))
 
-    st.markdown("---")
+st.markdown("---")
 
-    # ================= RISIKOFAKTOREN =================
-    st.subheader("⚠ Risikofaktoren")
+# ================= RISIKOFAKTOREN =================
+st.subheader("⚠ Risikofaktoren")
 
-    if alter >= 65:
-        st.warning("Alter erhöht Risiko")
-    if nier:
-        st.warning("Nierenerkrankung")
-    if schw:
-        st.warning("Schwangerschaft")
-    if immu:
-        st.warning("Immunschwäche")
-    if multi:
-        st.warning("Mehrere Medikamente")
-    if allergie != "Keine":
-        st.warning("Allergie vorhanden")
+if alter >= 65:
+    st.warning("Alter erhöht Risiko")
+if nier:
+    st.warning("Nierenerkrankung")
+if schw:
+    st.warning("Schwangerschaft")
+if immu:
+    st.warning("Immunschwäche")
+if multi:
+    st.warning("Mehrere Medikamente")
+if allergie != "Keine":
+    st.warning("Allergie vorhanden")
 
-    st.markdown("---")
+st.markdown("---")
 
-    # ================= INTERAKTIONEN =================
-    st.subheader("💊 Interaktionen")
+# ================= INTERAKTIONEN =================
+st.subheader("💊 Interaktionen")
 
-    st.info(d["Interaktionen"])
+st.info(d.get("Interaktionen", "Keine Interaktionen bekannt"))
 
-    st.markdown("---")
-
+st.markdown("---")
     # ================= LERNKARTEN =================
-    st.subheader("🧠 Lernkarten")
+st.subheader("🧠 Lernkarten")
 
-    with st.expander("Was ist ein Wirkstoff?"):
+with st.expander("Was ist ein Wirkstoff?"):
         st.write("""
         Ein Wirkstoff ist der aktive Bestandteil eines Medikaments,
         der für die Heilung, Linderung oder Vorbeugung verantwortlich ist.
         """)
 
-    with st.expander("Was ist Resistenz?"):
+with st.expander("Was ist Resistenz?"):
         st.write("""
         Eine Antibiotikaresistenz bedeutet, dass Bakterien unempfindlich
         gegenüber einem Antibiotikum werden.
         """)
 
-    with st.expander("Warum ist die Medikamentenklasse wichtig?"):
+with st.expander("Warum ist die Medikamentenklasse wichtig?"):
         st.write("""
         Sie zeigt den Wirkmechanismus (z.B. Zellwandhemmung oder Proteinsynthesehemmung).
         """)
 
-    with st.expander("Warum sind Allergien kritisch?"):
+with st.expander("Warum sind Allergien kritisch?"):
         st.write("""
         Allergien können schwere Reaktionen auslösen und müssen bei der Auswahl berücksichtigt werden.
         """)
 
-    st.markdown("---")
+st.markdown("---")
 
-    # ================= MINI QUIZ =================
-    st.subheader("📝 Mini Quiz")
+# ================= MINI QUIZ =================
+st.subheader("📝 Mini Quiz")
 
-    quiz = st.radio(
-        "Was bedeutet Resistenz?",
-        [
-            "Bakterien werden unempfindlich gegen Antibiotika",
-            "Antibiotika werden stärker",
-            "Der Körper produziert mehr Medikamente"
-        ]
-    )
+quiz = st.radio(
+    "Was bedeutet Resistenz?",
+    [
+        "Bakterien werden unempfindlich gegen Antibiotika",
+        "Antibiotika werden stärker",
+        "Der Körper produziert mehr Medikamente"
+    ]
+)
 
-    if quiz == "Bakterien werden unempfindlich gegen Antibiotika":
-        st.success("✅ Richtig")
-    else:
-        st.error("❌ Falsch")
+if quiz == "Bakterien werden unempfindlich gegen Antibiotika":
+    st.success("✅ Richtig")
+else:
+    st.error("❌ Falsch")
 
 # =========================================================
 # STATISTIK
 # =========================================================
-
 elif seite == "Statistik":
 
     st.title("Statistik")
