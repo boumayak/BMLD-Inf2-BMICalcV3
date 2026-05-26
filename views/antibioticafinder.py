@@ -324,7 +324,6 @@ if seite == "Empfehlungssystem":
                 st.warning("⚠ Arzt/Apotheker abklären!")
 
             # ===== LERNMODUS =====
-if lern:
 
     st.markdown("---")
     st.header("📚 Erweiterter Lernmodus")
