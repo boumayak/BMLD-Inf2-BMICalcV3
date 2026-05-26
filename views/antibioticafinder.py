@@ -341,7 +341,7 @@ if seite == "Empfehlungssystem":
 
     # ================= ANALYSE =================
     st.subheader("🦠 Analyse")
-
+    d = {}
     col1, col2 = st.columns(2)
 
     with col1:
