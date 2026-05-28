@@ -372,6 +372,15 @@ st.subheader("💡 Warum diese Therapie?")
 st.success(d.get("Warum", "Keine Begründung verfügbar"))
 
 st.markdown("---")
+# Standardwerte setzen, falls Variablen fehlen
+alter = locals().get("alter", 0)
+
+nier = locals().get("nier", False)
+schw = locals().get("schw", False)
+immu = locals().get("immu", False)
+multi = locals().get("multi", False)
+
+allergie = locals().get("allergie", "Keine")
 
 # ================= RISIKOFAKTOREN =================
 st.subheader("⚠ Risikofaktoren")
