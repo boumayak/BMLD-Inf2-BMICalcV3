@@ -348,6 +348,9 @@ col1, col2 = st.columns(2)
 if "d" not in locals():
     d = {}
 klasse = d.get("Medikamentenklasse", "Keine Angabe")
+bakterium = locals().get("bakterium", "Keine Angabe")
+infektion = locals().get("infektion", "Keine Angabe")
+klasse = locals().get("klasse", "Keine Angabe")
 with col1:
     st.write(f"**Bakterium:** {bakterium}")
     st.write(f"**Infektion:** {infektion}")
