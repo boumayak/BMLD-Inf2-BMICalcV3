@@ -324,168 +324,44 @@ if seite == "Empfehlungssystem":
                 st.warning("⚠ Arzt/Apotheker abklären!")
 
             # ===== LERNMODUS =====
+            st.markdown("---")
+            st.header("📚 Erweiterter Lernmodus")
 
-    st.markdown("---")
-    st.header("📚 Erweiterter Lernmodus")
+            st.info(
+                """
+                Antibiotika-Auswahl basiert auf:
+                - Bakterium
+                - Infektionsort
+                - Resistenzlage
+                - Allergien
+                - Patientenrisiko
+                """
+            )
 
-    st.info(
-        """
-        Antibiotika-Auswahl basiert auf:
-        - Bakterium
-        - Infektionsort
-        - Resistenzlage
-        - Allergien
-        - Patientenrisiko
-        """
-    )
+            # ================= ANALYSE =================
+            st.subheader("🦠 Analyse")
 
-    # ================= ANALYSE =================
-st.subheader("🦠 Analyse")
+            col1, col2 = st.columns(2)
 
-col1, col2 = st.columns(2)
+            # Falls d nicht existiert
+            if "d" not in locals():
+                d = {}
+            klasse = d.get("Medikamentenklasse", "Keine Angabe")
+            bakterium = locals().get("bakterium", "Keine Angabe")
+            infektion = locals().get("infektion", "Keine Angabe")
+            klasse = d.get("Medikamentenklasse", klasse)
 
-# Falls d nicht existiert
-if "d" not in locals():
-    d = {}
-klasse = d.get("Medikamentenklasse", "Keine Angabe")
-bakterium = locals().get("bakterium", "Keine Angabe")
-infektion = locals().get("infektion", "Keine Angabe")
-klasse = locals().get("klasse", "Keine Angabe")
-with col1:
-    st.write(f"**Bakterium:** {bakterium}")
-    st.write(f"**Infektion:** {infektion}")
-    st.write(
-        f"**Empfehlung:** {d.get('Empfehlung', 'Keine Empfehlung verfügbar')}"
-    )
+            with col1:
+                st.write(f"**Bakterium:** {bakterium}")
+                st.write(f"**Infektion:** {infektion}")
+                st.write(
+                    f"**Empfehlung:** {d.get('Empfehlung', 'Keine Empfehlung verfügbar')}"
+                )
 
-with col2:
-    st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
-    st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
-    st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
-    st.write(f"**Medikamentenklasse:** {klasse}")
+            with col2:
+                st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
+                st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
+                st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
+                st.write(f"**Medikamentenklasse:** {klasse}")
 
-st.markdown("---")
-
-# ================= WARUM =================
-st.subheader("💡 Warum diese Therapie?")
-
-st.success(d.get("Warum", "Keine Begründung verfügbar"))
-
-st.markdown("---")
-# Standardwerte setzen, falls Variablen fehlen
-alter = locals().get("alter", 0)
-
-nier = locals().get("nier", False)
-schw = locals().get("schw", False)
-immu = locals().get("immu", False)
-multi = locals().get("multi", False)
-
-allergie = locals().get("allergie", "Keine")
-
-# ================= RISIKOFAKTOREN =================
-st.subheader("⚠ Risikofaktoren")
-
-if alter >= 65:
-    st.warning("Alter erhöht Risiko")
-if nier:
-    st.warning("Nierenerkrankung")
-if schw:
-    st.warning("Schwangerschaft")
-if immu:
-    st.warning("Immunschwäche")
-if multi:
-    st.warning("Mehrere Medikamente")
-if allergie != "Keine":
-    st.warning("Allergie vorhanden")
-
-st.markdown("---")
-
-# ================= INTERAKTIONEN =================
-st.subheader("💊 Interaktionen")
-
-st.info(d.get("Interaktionen", "Keine Interaktionen bekannt"))
-
-st.markdown("---")
-    # ================= LERNKARTEN =================
-st.subheader("🧠 Lernkarten")
-
-with st.expander("Was ist ein Wirkstoff?"):
-        st.write("""
-        Ein Wirkstoff ist der aktive Bestandteil eines Medikaments,
-        der für die Heilung, Linderung oder Vorbeugung verantwortlich ist.
-        """)
-
-with st.expander("Was ist Resistenz?"):
-        st.write("""
-        Eine Antibiotikaresistenz bedeutet, dass Bakterien unempfindlich
-        gegenüber einem Antibiotikum werden.
-        """)
-
-with st.expander("Warum ist die Medikamentenklasse wichtig?"):
-        st.write("""
-        Sie zeigt den Wirkmechanismus (z.B. Zellwandhemmung oder Proteinsynthesehemmung).
-        """)
-
-with st.expander("Warum sind Allergien kritisch?"):
-        st.write("""
-        Allergien können schwere Reaktionen auslösen und müssen bei der Auswahl berücksichtigt werden.
-        """)
-
-st.markdown("---")
-
-# ================= MINI QUIZ =================
-st.subheader("📝 Mini Quiz")
-
-quiz = st.radio(
-    "Was bedeutet Resistenz?",
-    [
-        "Bakterien werden unempfindlich gegen Antibiotika",
-        "Antibiotika werden stärker",
-        "Der Körper produziert mehr Medikamente"
-    ]
-)
-
-if quiz == "Bakterien werden unempfindlich gegen Antibiotika":
-    st.success("✅ Richtig")
-else:
-    st.error("❌ Falsch")
-
-# =========================================================
-# STATISTIK
-# =========================================================
-if seite == "Statistik":
-
-    st.title("Statistik")
-
-    df = st.session_state["verlauf_df"]
-
-    if not df.empty:
-        st.bar_chart(df["Empfehlung"].value_counts())
-    else:
-        st.info("Keine Daten")
-
-# =========================================================
-# LERNBEREICH
-# =========================================================
-
-elif seite == "Lernbereich":
-
-    st.title("Lernbereich")
-
-    st.write("Wirkstoff = aktiver Bestandteil eines Medikaments")
-    st.write("Resistenz = Bakterien werden unempfindlich gegen Antibiotika")
-
-# =========================================================
-# VERLAUF
-# =========================================================
-
-elif seite == "Verlauf":
-
-    st.title("Verlauf")
-
-    df = st.session_state["verlauf_df"]
-
-    if not df.empty:
-        st.dataframe(df)
-    else:
-        st.info("Keine Daten")
+            st.markdown("---")
