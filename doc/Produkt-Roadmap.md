@@ -55,9 +55,8 @@ Die Roadmap zeigt, in welcher Reihenfolge Funktionen entwickelt werden, sodass j
 
 ---
 
-### V7.0 – Suchfunktion für Bakterien
-- Direkte Suche statt nur Auswahl
-- Schnellere Nutzung im Laboralltag
+### V7.0 – Datenbank 
+- Antibiotika Informationen 
 
 ---
 

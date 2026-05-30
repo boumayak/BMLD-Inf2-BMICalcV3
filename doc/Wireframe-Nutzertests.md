@@ -118,3 +118,10 @@ Lea findet die App hilfreich und schnell
 - fehlende Priorisierung bei Ergebnissen (alles gleich wichtig)  
 
 
+Schlussfolgerungen
+
+Die Testpersonen konnten die App grundsätzlich gut bedienen. Besonders positiv bewertet wurden die klare Struktur und die zusätzlichen Informationen im Lernmodus.
+
+Einige Nutzerinnen und Nutzer fanden medizinische Begriffe jedoch schwierig verständlich. Deshalb wurden zusätzliche Erklärungen ergänzt und die Benutzeroberfläche vereinfacht.
+
+Die Tests zeigten, dass die App grundsätzlich verständlich ist, aber durch einfachere Sprache und zusätzliche Hilfestellungen weiter verbessert werden kann.

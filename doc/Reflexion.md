@@ -17,3 +17,17 @@ Der Lernbereich wurde ausgebaut und enthält nun zusätzliche Fachbegriffe wie M
 
 12.05.26
 Die App wurde insgesamt stabilisiert und weiter getestet. Kleinere Fehler in der Empfehlungsausgabe und Datenverarbeitung wurden korrigiert. Die Benutzerführung ist nun deutlich klarer und die Anwendung läuft stabil ohne Fehlermeldungen.
+
+
+Persönliche Erkenntnisse und Learnings (Reflexion)
+Reflexion und persönliche Learnings
+
+Während der Entwicklung unseres Projekts haben wir viele neue Erfahrungen gesammelt.
+
+Ein wichtiger Lernpunkt war die Arbeit mit Python und Streamlit. Besonders die Erstellung einer interaktiven Benutzeroberfläche war anfangs schwierig. Wir mussten lernen, wie Eingaben verarbeitet werden und wie verschiedene Bereiche der App logisch miteinander verbunden werden.
+
+Ausserdem haben wir verstanden, wie wichtig Fehlerbehandlung ist. Während der Entwicklung traten häufig Probleme auf, beispielsweise nicht definierte Variablen oder falsche Einrückungen im Code. Dadurch haben wir gelernt, strukturierter zu programmieren und Fehler systematisch zu analysieren.
+
+Ein weiterer wichtiger Punkt war die Benutzerfreundlichkeit. Nach Feedback von Testpersonen haben wir die App verständlicher gestaltet und den Lernmodus verbessert.
+
+Rückblickend haben wir gelernt, dass Softwareentwicklung nicht nur aus Programmieren besteht, sondern auch aus Planung, Testing und kontinuierlicher Verbesserung.
