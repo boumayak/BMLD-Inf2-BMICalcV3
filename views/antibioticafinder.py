@@ -366,10 +366,9 @@ if seite == "Empfehlungssystem":
                 st.warning("⚠ Arzt/Apotheker abklären!")
 
             # ===== LERNMODUS =====
-                lern = locals().get("lern", False)
+            lern = locals().get("lern", False)
 
-            if lern:
-                st.markdown("---")
+            if ok and lern:
                 st.header("📚 Erweiterter Lernmodus")
 
                 st.subheader("🧠 Lernkarten")
