@@ -371,53 +371,50 @@ if seite == "Empfehlungssystem":
 
             lern = locals().get("lern", False)
 
-            # ===== LERNMODUS =====
+            if lern:
 
-lern = locals().get("lern", False)
+                d = locals().get("d", {})
+                ab = locals().get("ab", "Keine Empfehlung")
+                klasse = medikamentenklasse(
+                    d.get("Wirkstoff", "")
+                )
 
-if lern:
+                st.markdown("---")
+                st.header("📚 Erweiterter Lernmodus")
 
-    d = locals().get("d", {})
-    ab = locals().get("ab", "Keine Empfehlung")
-    klasse = medikamentenklasse(
-        d.get("Wirkstoff", "")
-    )
+                st.info("""
+                Antibiotika-Auswahl basiert auf:
+                - Bakterium
+                - Infektionsort
+                - Resistenzlage
+                - Allergien
+                - Patientenrisiko
+                """)
+                with tab2:
 
-    st.markdown("---")
-    st.header("📚 Erweiterter Lernmodus")
+                    st.subheader("📋 Antibiotika-Datenbank")
 
-    st.info("""
-    Antibiotika-Auswahl basiert auf:
-    - Bakterium
-    - Infektionsort
-    - Resistenzlage
-    - Allergien
-    - Patientenrisiko
-    """)
-        with tab2:
+                    st.write("Hier siehst du alle Antibiotika aus deiner Datenbank.")
 
-        st.subheader("📋 Antibiotika-Datenbank")
+                    filter_infektion = st.selectbox(
+                        "Nach Infektion filtern",
+                        ["Alle"] + list(antibiotika_df["Infektion"].unique()),
+                        key="filter_infektion"
+                    )
 
-        st.write("Hier siehst du alle Antibiotika aus deiner Datenbank.")
+                    if filter_infektion == "Alle":
+                        df_anzeige = antibiotika_df
+                    else:
+                        df_anzeige = antibiotika_df[
+                            antibiotika_df["Infektion"] == filter_infektion
+                        ]
 
-        filter_infektion = st.selectbox(
-            "Nach Infektion filtern",
-            ["Alle"] + list(antibiotika_df["Infektion"].unique()),
-            key="filter_infektion"
-        )
+                    st.write(f"Gefundene Einträge: {len(df_anzeige)}")
 
-        if filter_infektion == "Alle":
-            df_anzeige = antibiotika_df
-        else:
-            df_anzeige = antibiotika_df[
-                antibiotika_df["Infektion"] == filter_infektion
-            ]
+                    st.dataframe(df_anzeige, use_container_width=True)
 
-        st.write(f"Gefundene Einträge: {len(df_anzeige)}")
-
-        st.dataframe(df_anzeige, use_container_width=True)
-    # ================= ANALYSE =================
-    st.subheader("🦠 Analyse")
+                # ================= ANALYSE =================
+                st.subheader("🦠 Analyse")
 
     col1, col2 = st.columns(2)
 
