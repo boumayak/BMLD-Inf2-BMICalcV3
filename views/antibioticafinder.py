@@ -378,32 +378,116 @@ if seite == "Empfehlungssystem":
                 - Allergien
                 - Patientenrisiko
                 """
+            )# =========================================================
+# STATISTIK
+# =========================================================
+
+elif seite == "Statistik":
+
+    st.title("📊 Statistik")
+
+    df = st.session_state["verlauf_df"]
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Gespeicherte Empfehlungen", len(df))
+    col2.metric("Antibiotika in Datenbank", len(antibiotika_df))
+    col3.metric("Infektionsarten", antibiotika_df["Infektion"].nunique())
+
+    st.markdown("---")
+
+    if not df.empty:
+        st.subheader("Häufig empfohlene Antibiotika")
+        st.bar_chart(df["Empfehlung"].value_counts())
+
+        st.subheader("Risikoverteilung")
+        st.bar_chart(df["Risiko"].value_counts())
+    else:
+        st.info("Noch keine Statistik vorhanden. Starte zuerst eine Empfehlung.")
+
+
+# =========================================================
+# LERNBEREICH
+# =========================================================
+
+elif seite == "Lernbereich":
+
+    st.title("📚 Lernbereich")
+
+    st.subheader("Grundbegriffe")
+
+    with st.expander("Was ist ein Wirkstoff?"):
+        st.write("Ein Wirkstoff ist der aktive Bestandteil eines Medikaments.")
+
+    with st.expander("Was bedeutet Resistenz?"):
+        st.write("Resistenz bedeutet, dass Bakterien unempfindlich gegen ein Antibiotikum werden.")
+
+    with st.expander("Was ist eine Medikamentenklasse?"):
+        st.write("Eine Medikamentenklasse beschreibt, zu welcher Gruppe ein Medikament gehört.")
+
+    st.markdown("---")
+
+    st.subheader("Mini-Quiz")
+
+    antwort = st.radio(
+        "Was bedeutet Antibiotikaresistenz?",
+        [
+            "Bakterien werden unempfindlich gegen Antibiotika",
+            "Antibiotika werden stärker",
+            "Der Körper produziert Antibiotika"
+        ]
+    )
+
+    if antwort == "Bakterien werden unempfindlich gegen Antibiotika":
+        st.success("✅ Richtig")
+    else:
+        st.error("❌ Nicht ganz richtig")
+
+
+# =========================================================
+# VERLAUF
+# =========================================================
+
+elif seite == "Verlauf":
+
+    st.title("📋 Verlauf")
+
+    df = st.session_state["verlauf_df"]
+
+    if not df.empty:
+        st.dataframe(df, use_container_width=True)
+
+        if st.button("Verlauf löschen"):
+            st.session_state["verlauf_df"] = pd.DataFrame()
+            st.success("Verlauf wurde gelöscht.")
+            st.rerun()
+    else:
+        st.info("Noch keine Empfehlungen gespeichert.")
+
+        # ================= ANALYSE =================
+        st.subheader("🦠 Analyse")
+
+        col1, col2 = st.columns(2)
+
+        # Falls d nicht existiert
+        if "d" not in locals():
+            d = {}
+        klasse = d.get("Medikamentenklasse", "Keine Angabe")
+        bakterium = locals().get("bakterium", "Keine Angabe")
+        infektion = locals().get("infektion", "Keine Angabe")
+        klasse = d.get("Medikamentenklasse", klasse)
+
+        with col1:
+            st.write(f"**Bakterium:** {bakterium}")
+            st.write(f"**Infektion:** {infektion}")
+            st.write(
+                f"**Empfehlung:** {d.get('Empfehlung', 'Keine Empfehlung verfügbar')}"
             )
 
-            # ================= ANALYSE =================
-            st.subheader("🦠 Analyse")
+        with col2:
+            st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
+            st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
+            st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
+            st.write(f"**Medikamentenklasse:** {klasse}")
 
-            col1, col2 = st.columns(2)
-
-            # Falls d nicht existiert
-            if "d" not in locals():
-                d = {}
-            klasse = d.get("Medikamentenklasse", "Keine Angabe")
-            bakterium = locals().get("bakterium", "Keine Angabe")
-            infektion = locals().get("infektion", "Keine Angabe")
-            klasse = d.get("Medikamentenklasse", klasse)
-
-            with col1:
-                st.write(f"**Bakterium:** {bakterium}")
-                st.write(f"**Infektion:** {infektion}")
-                st.write(
-                    f"**Empfehlung:** {d.get('Empfehlung', 'Keine Empfehlung verfügbar')}"
-                )
-
-            with col2:
-                st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
-                st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
-                st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
-                st.write(f"**Medikamentenklasse:** {klasse}")
-
-            st.markdown("---")
+        st.markdown("---")
