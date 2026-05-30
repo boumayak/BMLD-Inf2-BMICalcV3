@@ -9,4 +9,4 @@ boumayak@students.zhaw.ch
 marinteo@studnets.zhaw.ch
 weissma8@students.zhaw.ch
 
-Link to the app: https://github.com/boumayak/BMLD-Inf2-BMICalcV3
+Link to the app: https://bmld-inf2-bmicalcv3-rd6mk597f3dzgrptsktgu2.streamlit.app/
