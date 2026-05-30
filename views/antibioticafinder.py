@@ -372,6 +372,9 @@ if seite == "Empfehlungssystem":
             lern = locals().get("lern", False)
 
             # ===== LERNMODUS =====
+            ok = locals().get("ok", False)
+lern = locals().get("lern", False)
+
 if ok and lern:
 
     d = locals().get("d", {})
