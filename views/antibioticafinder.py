@@ -365,7 +365,10 @@ if seite == "Empfehlungssystem":
             if risiko != "Niedrig":
                 st.warning("⚠ Arzt/Apotheker abklären!")
 
+            d = locals().get("d", {})
+
             # ===== LERNMODUS =====
+
             lern = locals().get("lern", False)
 
             if ok and lern:
