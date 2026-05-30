@@ -414,28 +414,28 @@ if seite == "Empfehlungssystem":
                     st.dataframe(df_anzeige, use_container_width=True)
 
                 # ================= ANALYSE =================
+                d = locals().get("d", {})
+                ab = locals().get("ab", "Keine Empfehlung")
                 st.subheader("🦠 Analyse")
 
-    col1, col2 = st.columns(2)
+                col1, col2 = st.columns(2)
 
-    with col1:
-        st.write(f"**Bakterium:** {bakterium}")
-        st.write(f"**Infektion:** {infektion}")
-        st.write(
-    f"**Empfehlung:** {locals().get('ab', 'Keine Empfehlung verfügbar')}"
-)
+                with col1:
+                    st.write(f"**Bakterium:** {bakterium}")
+                    st.write(f"**Infektion:** {infektion}")
+                    st.write(f"**Empfehlung:** {ab}")
 
-    with col2:
-        st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
-        st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
-        st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
-        st.write(f"**Medikamentenklasse:** {klasse}")
+                with col2:
+                    st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
+                    st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
+                    st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
+                    st.write(
+                        f"**Medikamentenklasse:** {medikamentenklasse(d.get('Wirkstoff', ''))}"
+                    )
 
-    st.markdown("---")
-
-    # ================= WARUM =================
-    st.subheader("💡 Warum diese Therapie?")
-    st.success(d.get("Warum", "Keine Begründung verfügbar"))
+                # ================= WARUM =================
+                st.subheader("💡 Warum diese Therapie?")
+                st.success(d.get("Warum", "Keine Begründung verfügbar"))
 
     st.markdown("---")
 
