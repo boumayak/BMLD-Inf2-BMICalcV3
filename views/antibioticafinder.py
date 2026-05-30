@@ -6,23 +6,65 @@ from datetime import datetime
 # SEITENKONFIGURATION
 # =========================================================
 
-st.set_page_config(
-    page_title="Antibiotika Empfehlungssystem",
-    layout="wide"
-)
-
-# 🎨 DESIGN
+# 🎨 MODERNES DESIGN
 st.markdown(
     """
     <style>
     .stApp {
-        background-color: #f8d7da;
+        background: linear-gradient(135deg, #f8fbff 0%, #eaf4f8 100%);
+        color: #1f2937;
+    }
+
+    h1, h2, h3 {
+        color: #12343b;
+        font-weight: 700;
+    }
+
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #12343b 0%, #1f4e5f 100%);
+    }
+
+    section[data-testid="stSidebar"] * {
+        color: white !important;
+    }
+
+    .stButton > button {
+        background-color: #1f7a8c;
+        color: white;
+        border-radius: 12px;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        font-weight: 600;
+    }
+
+    .stButton > button:hover {
+        background-color: #155e6b;
+        color: white;
+    }
+
+    div[data-testid="stMetric"],
+    div[data-testid="stExpander"],
+    div[data-testid="stAlert"] {
+        border-radius: 16px;
+    }
+
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        max-width: 1200px;
+    }
+
+    div[data-testid="stForm"] {
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 24px;
+        border-radius: 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        border: 1px solid rgba(255,255,255,0.6);
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
 # =========================================================
 # DATENBANK (ERWEITERT)
 # =========================================================
