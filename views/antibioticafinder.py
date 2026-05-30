@@ -394,23 +394,26 @@ if lern:
     - Allergien
     - Patientenrisiko
     """)
-    with tab2:
+        with tab2:
 
         st.subheader("📋 Antibiotika-Datenbank")
 
-        st.write("Hier siehst du alle gespeicherten Antibiotika und ihre Informationen.")
+        st.write("Hier siehst du alle Antibiotika aus deiner Datenbank.")
 
         filter_infektion = st.selectbox(
             "Nach Infektion filtern",
-            ["Alle"] + list(antibiotika_df["Infektion"].unique())
+            ["Alle"] + list(antibiotika_df["Infektion"].unique()),
+            key="filter_infektion"
         )
 
-        if filter_infektion != "Alle":
+        if filter_infektion == "Alle":
+            df_anzeige = antibiotika_df
+        else:
             df_anzeige = antibiotika_df[
                 antibiotika_df["Infektion"] == filter_infektion
             ]
-        else:
-            df_anzeige = antibiotika_df
+
+        st.write(f"Gefundene Einträge: {len(df_anzeige)}")
 
         st.dataframe(df_anzeige, use_container_width=True)
     # ================= ANALYSE =================
