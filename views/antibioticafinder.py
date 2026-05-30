@@ -366,19 +366,110 @@ if seite == "Empfehlungssystem":
                 st.warning("⚠ Arzt/Apotheker abklären!")
 
             # ===== LERNMODUS =====
-            st.markdown("---")
-            st.header("📚 Erweiterter Lernmodus")
+if lern:
 
-            st.info(
-                """
-                Antibiotika-Auswahl basiert auf:
-                - Bakterium
-                - Infektionsort
-                - Resistenzlage
-                - Allergien
-                - Patientenrisiko
-                """
-            )# =========================================================
+    st.markdown("---")
+    st.header("📚 Erweiterter Lernmodus")
+
+    st.info(
+        """
+        Antibiotika-Auswahl basiert auf:
+        - Bakterium
+        - Infektionsort
+        - Resistenzlage
+        - Allergien
+        - Patientenrisiko
+        """
+    )
+
+    # ================= ANALYSE =================
+    st.subheader("🦠 Analyse")
+
+    col1, col2 = st.columns(2)
+
+    if "d" not in locals():
+        d = {}
+
+    klasse = d.get("Medikamentenklasse", "Keine Angabe")
+    bakterium = locals().get("bakterium", "Keine Angabe")
+    infektion = locals().get("infektion", "Keine Angabe")
+
+    with col1:
+        st.write(f"**Bakterium:** {bakterium}")
+        st.write(f"**Infektion:** {infektion}")
+        st.write(f"**Empfehlung:** {ab}")
+
+    with col2:
+        st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
+        st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
+        st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
+        st.write(f"**Medikamentenklasse:** {klasse}")
+
+    st.markdown("---")
+
+    # ================= WARUM =================
+    st.subheader("💡 Warum diese Therapie?")
+    st.success(d.get("Warum", "Keine Begründung verfügbar"))
+
+    st.markdown("---")
+
+    # ================= RISIKOFAKTOREN =================
+    st.subheader("⚠ Risikofaktoren")
+
+    if alter >= 65:
+        st.warning("Alter erhöht Risiko")
+    if nier:
+        st.warning("Nierenerkrankung")
+    if schw:
+        st.warning("Schwangerschaft")
+    if immu:
+        st.warning("Immunschwäche")
+    if multi:
+        st.warning("Mehrere Medikamente")
+    if allergie != "Keine":
+        st.warning("Allergie vorhanden")
+
+    st.markdown("---")
+
+    # ================= INTERAKTIONEN =================
+    st.subheader("💊 Interaktionen")
+    st.info(d.get("Interaktionen", "Keine Interaktionen bekannt"))
+
+    st.markdown("---")
+
+    # ================= LERNKARTEN =================
+    st.subheader("🧠 Lernkarten")
+
+    with st.expander("Was ist ein Wirkstoff?"):
+        st.write("""
+        Ein Wirkstoff ist der aktive Bestandteil eines Medikaments,
+        der für die Heilung verantwortlich ist.
+        """)
+
+    with st.expander("Was ist Resistenz?"):
+        st.write("""
+        Resistenz bedeutet, dass Bakterien unempfindlich gegen Antibiotika werden.
+        """)
+
+    st.markdown("---")
+
+    # ================= MINI QUIZ =================
+    st.subheader("📝 Mini Quiz")
+
+    quiz = st.radio(
+        "Was bedeutet Resistenz?",
+        [
+            "Bakterien werden unempfindlich gegen Antibiotika",
+            "Antibiotika werden stärker",
+            "Der Körper produziert mehr Medikamente"
+        ]
+    )
+
+    if quiz == "Bakterien werden unempfindlich gegen Antibiotika":
+        st.success("✅ Richtig")
+    else:
+        st.error("❌ Falsch")
+# =========================================================
 # STATISTIK
 # =========================================================
 
