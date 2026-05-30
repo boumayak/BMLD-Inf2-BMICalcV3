@@ -398,7 +398,9 @@ if seite == "Empfehlungssystem":
     with col1:
         st.write(f"**Bakterium:** {bakterium}")
         st.write(f"**Infektion:** {infektion}")
-        st.write(f"**Empfehlung:** {ab}")
+        st.write(
+    f"**Empfehlung:** {locals().get('ab', 'Keine Empfehlung verfügbar')}"
+)
 
     with col2:
         st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
