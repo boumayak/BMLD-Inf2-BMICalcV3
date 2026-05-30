@@ -567,30 +567,4 @@ elif seite == "Verlauf":
             st.rerun()
     else:
         st.info("Noch keine Empfehlungen gespeichert.")
-        # ================= ANALYSE =================
-        st.subheader("🦠 Analyse")
-
-        col1, col2 = st.columns(2)
-
-        # Falls d nicht existiert
-        if "d" not in locals():
-            d = {}
-        klasse = d.get("Medikamentenklasse", "Keine Angabe")
-        bakterium = locals().get("bakterium", "Keine Angabe")
-        infektion = locals().get("infektion", "Keine Angabe")
-        klasse = d.get("Medikamentenklasse", klasse)
-
-        with col1:
-            st.write(f"**Bakterium:** {bakterium}")
-            st.write(f"**Infektion:** {infektion}")
-            st.write(
-                f"**Empfehlung:** {d.get('Empfehlung', 'Keine Empfehlung verfügbar')}"
-            )
-
-        with col2:
-            st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
-            st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
-            st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
-            st.write(f"**Medikamentenklasse:** {klasse}")
-
-        st.markdown("---")
+       
