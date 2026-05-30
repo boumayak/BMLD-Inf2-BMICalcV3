@@ -345,7 +345,14 @@ if seite == "Empfehlungssystem":
             ab = antibiotika_empfehlung(bakterium, infektion, allergie)
             d = hole_details(ab)
 
-            risiko, p = berechne_risiko(alter, nier, schw, immu, allergie, multi, d["Resistenz"])
+            if d is None:
+                st.error("Keine Details gefunden.")
+                st.stop()
+
+            risiko, p = berechne_risiko(
+                alter, nier, schw, immu, allergie, multi, d["Resistenz"]
+            )
+
             klasse = medikamentenklasse(d["Wirkstoff"])
 
             speichern({
@@ -365,19 +372,8 @@ if seite == "Empfehlungssystem":
             if risiko != "Niedrig":
                 st.warning("⚠ Arzt/Apotheker abklären!")
 
-            d = locals().get("d", {})
-
             # ===== LERNMODUS =====
-
-            lern = locals().get("lern", False)
-
             if lern:
-
-                d = locals().get("d", {})
-                ab = locals().get("ab", "Keine Empfehlung")
-                klasse = medikamentenklasse(
-                    d.get("Wirkstoff", "")
-                )
 
                 st.markdown("---")
                 st.header("📚 Erweiterter Lernmodus")
@@ -390,32 +386,7 @@ if seite == "Empfehlungssystem":
                 - Allergien
                 - Patientenrisiko
                 """)
-                with tab2:
 
-                    st.subheader("📋 Antibiotika-Datenbank")
-
-                    st.write("Hier siehst du alle Antibiotika aus deiner Datenbank.")
-
-                    filter_infektion = st.selectbox(
-                        "Nach Infektion filtern",
-                        ["Alle"] + list(antibiotika_df["Infektion"].unique()),
-                        key="filter_infektion"
-                    )
-
-                    if filter_infektion == "Alle":
-                        df_anzeige = antibiotika_df
-                    else:
-                        df_anzeige = antibiotika_df[
-                            antibiotika_df["Infektion"] == filter_infektion
-                        ]
-
-                    st.write(f"Gefundene Einträge: {len(df_anzeige)}")
-
-                    st.dataframe(df_anzeige, use_container_width=True)
-
-                # ================= ANALYSE =================
-                d = locals().get("d", {})
-                ab = locals().get("ab", "Keine Empfehlung")
                 st.subheader("🦠 Analyse")
 
                 col1, col2 = st.columns(2)
@@ -429,81 +400,88 @@ if seite == "Empfehlungssystem":
                     st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
                     st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
                     st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
-                    st.write(
-                        f"**Medikamentenklasse:** {medikamentenklasse(d.get('Wirkstoff', ''))}"
-                    )
+                    st.write(f"**Medikamentenklasse:** {klasse}")
 
-                # ================= WARUM =================
+                st.markdown("---")
+
                 st.subheader("💡 Warum diese Therapie?")
                 st.success(d.get("Warum", "Keine Begründung verfügbar"))
 
-    st.markdown("---")
+                st.markdown("---")
 
-    # ================= RISIKOFAKTOREN =================
-    st.subheader("⚠ Risikofaktoren")
+                st.subheader("⚠ Risikofaktoren")
 
-    if alter >= 65:
-        st.warning("Alter erhöht Risiko")
-    if nier:
-        st.warning("Nierenerkrankung")
-    if schw:
-        st.warning("Schwangerschaft")
-    if immu:
-        st.warning("Immunschwäche")
-    if multi:
-        st.warning("Mehrere Medikamente")
-    if allergie != "Keine":
-        st.warning("Allergie vorhanden")
+                if alter >= 65:
+                    st.warning("Alter erhöht Risiko")
+                if nier:
+                    st.warning("Nierenerkrankung")
+                if schw:
+                    st.warning("Schwangerschaft")
+                if immu:
+                    st.warning("Immunschwäche")
+                if multi:
+                    st.warning("Mehrere Medikamente")
+                if allergie != "Keine":
+                    st.warning("Allergie vorhanden")
 
-    st.markdown("---")
+                st.markdown("---")
 
-    # ================= INTERAKTIONEN =================
-    st.subheader("💊 Interaktionen")
-    st.info(
-    locals().get("d", {}).get(
-        "Interaktionen",
-        "Keine Interaktionen bekannt"
-    )
-)
+                st.subheader("💊 Interaktionen")
+                st.info(d.get("Interaktionen", "Keine Interaktionen bekannt"))
 
-    st.markdown("---")
+                st.markdown("---")
 
-    # ================= LERNKARTEN =================
-    st.subheader("🧠 Lernkarten")
+                st.subheader("🧠 Lernkarten")
 
-    with st.expander("Was ist ein Wirkstoff?"):
-        st.write(
-            "Ein Wirkstoff ist der aktive Bestandteil eines Medikaments."
+                with st.expander("Was ist ein Wirkstoff?"):
+                    st.write("Ein Wirkstoff ist der aktive Bestandteil eines Medikaments.")
+
+                with st.expander("Was ist Resistenz?"):
+                    st.write("Resistenz bedeutet, dass Bakterien unempfindlich gegen Antibiotika werden.")
+
+                with st.expander("Warum Medikamentenklasse?"):
+                    st.write("Sie zeigt den Wirkmechanismus des Antibiotikums.")
+
+                st.markdown("---")
+
+                st.subheader("📝 Mini Quiz")
+
+                quiz = st.radio(
+                    "Was bedeutet Resistenz?",
+                    [
+                        "Bakterien werden unempfindlich gegen Antibiotika",
+                        "Antibiotika werden stärker",
+                        "Der Körper produziert mehr Medikamente"
+                    ]
+                )
+
+                if quiz == "Bakterien werden unempfindlich gegen Antibiotika":
+                    st.success("✅ Richtig")
+                else:
+                    st.error("❌ Falsch")
+
+    with tab2:
+
+        st.subheader("📋 Antibiotika-Datenbank")
+        st.write("Hier siehst du alle Antibiotika aus deiner Datenbank.")
+
+        filter_infektion = st.selectbox(
+            "Nach Infektion filtern",
+            ["Alle"] + list(antibiotika_df["Infektion"].unique()),
+            key="filter_infektion"
         )
 
-    with st.expander("Was ist Resistenz?"):
-        st.write(
-            "Resistenz bedeutet, dass Bakterien unempfindlich gegen Antibiotika werden."
-        )
+        if filter_infektion == "Alle":
+            df_anzeige = antibiotika_df
+        else:
+            df_anzeige = antibiotika_df[
+                antibiotika_df["Infektion"] == filter_infektion
+            ]
 
-    with st.expander("Warum Medikamentenklasse?"):
-        st.write(
-            "Sie zeigt den Wirkmechanismus des Antibiotikums."
-        )
+        st.write(f"Gefundene Einträge: {len(df_anzeige)}")
+        st.dataframe(df_anzeige, use_container_width=True)
 
-    st.markdown("---")
 
-    # ================= MINI QUIZ =================
-    st.subheader("📝 Mini Quiz")
-
-    quiz = st.radio(
-        "Was bedeutet Resistenz?",
-        [
-            "Bakterien werden unempfindlich gegen Antibiotika",
-            "Antibiotika werden stärker",
-            "Der Körper produziert mehr Medikamente"
-        ]
-    )
-
-    if quiz == "Bakterien werden unempfindlich gegen Antibiotika":
-        st.success("✅ Richtig")
-    else:
-        st.error("❌ Falsch")
 # =========================================================
 # STATISTIK
 # =========================================================
@@ -589,7 +567,6 @@ elif seite == "Verlauf":
             st.rerun()
     else:
         st.info("Noch keine Empfehlungen gespeichert.")
-
         # ================= ANALYSE =================
         st.subheader("🦠 Analyse")
 
