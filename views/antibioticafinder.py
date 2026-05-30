@@ -313,7 +313,7 @@ if seite == "Empfehlungssystem":
 
     st.title("🦠 Antibiotika System")
 
-    tab1, tab2 = st.tabs(["Empfehlung", "Suche"])
+    tab1, tab2 = st.tabs(["Empfehlung", "Datenbank"])
 
     with tab1:
 
@@ -394,7 +394,25 @@ if lern:
     - Allergien
     - Patientenrisiko
     """)
+    with tab2:
 
+        st.subheader("📋 Antibiotika-Datenbank")
+
+        st.write("Hier siehst du alle gespeicherten Antibiotika und ihre Informationen.")
+
+        filter_infektion = st.selectbox(
+            "Nach Infektion filtern",
+            ["Alle"] + list(antibiotika_df["Infektion"].unique())
+        )
+
+        if filter_infektion != "Alle":
+            df_anzeige = antibiotika_df[
+                antibiotika_df["Infektion"] == filter_infektion
+            ]
+        else:
+            df_anzeige = antibiotika_df
+
+        st.dataframe(df_anzeige, use_container_width=True)
     # ================= ANALYSE =================
     st.subheader("🦠 Analyse")
 
