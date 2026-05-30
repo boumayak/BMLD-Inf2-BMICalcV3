@@ -372,52 +372,64 @@ if seite == "Empfehlungssystem":
                 st.markdown("---")
                 st.header("📚 Erweiterter Lernmodus")
 
-    st.info(
-        """
-        Antibiotika-Auswahl basiert auf:
-        - Bakterium
-        - Infektionsort
-        - Resistenzlage
-        - Allergien
-        - Patientenrisiko
-        """
-    )
+                st.subheader("🧠 Lernkarten")
 
-    # ================= ANALYSE =================
-    st.subheader("🦠 Analyse")
+                with st.expander("Was ist ein Wirkstoff?"):
+                    st.write("Ein Wirkstoff ist der aktive Bestandteil eines Medikaments.")
 
-    col1, col2 = st.columns(2)
+                st.markdown("---")
 
-    if "d" not in locals():
-        d = {}
+                st.subheader("📝 Mini Quiz")
 
-    klasse = d.get("Medikamentenklasse", "Keine Angabe")
-    bakterium = locals().get("bakterium", "Keine Angabe")
-    infektion = locals().get("infektion", "Keine Angabe")
+                quiz = st.radio(
+                    "Was bedeutet Resistenz?",
+                    [
+                        "Bakterien werden unempfindlich gegen Antibiotika",
+                        "Antibiotika werden stärker",
+                        "Der Körper produziert mehr Medikamente"
+                    ]
+                )
 
-    with col1:
-        st.write(f"**Bakterium:** {bakterium}")
-        st.write(f"**Infektion:** {infektion}")
-        st.write(
-    f"**Empfehlung:** {locals().get('ab', 'Keine Empfehlung verfügbar')}"
-)
+                if quiz == "Bakterien werden unempfindlich gegen Antibiotika":
+                    st.success("✅ Richtig")
+                else:
+                    st.error("❌ Falsch")
 
-    with col2:
-        st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
-        st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
-        st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
-        st.write(f"**Medikamentenklasse:** {klasse}")
+                # ================= ANALYSE =================
+                st.subheader("🦠 Analyse")
 
-    st.markdown("---")
+                col1, col2 = st.columns(2)
 
-    # ================= WARUM =================
-    st.subheader("💡 Warum diese Therapie?")
-    st.success(d.get("Warum", "Keine Begründung verfügbar"))
+                if "d" not in locals():
+                    d = {}
 
-    st.markdown("---")
+                klasse = d.get("Medikamentenklasse", "Keine Angabe")
+                bakterium = locals().get("bakterium", "Keine Angabe")
+                infektion = locals().get("infektion", "Keine Angabe")
 
-    # ================= RISIKOFAKTOREN =================
-    st.subheader("⚠ Risikofaktoren")
+                with col1:
+                    st.write(f"**Bakterium:** {bakterium}")
+                    st.write(f"**Infektion:** {infektion}")
+                    st.write(
+                        f"**Empfehlung:** {locals().get('ab', 'Keine Empfehlung verfügbar')}"
+                    )
+
+                with col2:
+                    st.write(f"**Wirkstoff:** {d.get('Wirkstoff', 'Keine Angabe')}")
+                    st.write(f"**Dosierung:** {d.get('Dosierung', 'Keine Angabe')}")
+                    st.write(f"**Resistenz:** {d.get('Resistenz', 'Keine Angabe')}")
+                    st.write(f"**Medikamentenklasse:** {klasse}")
+
+                st.markdown("---")
+
+                # ================= WARUM =================
+                st.subheader("💡 Warum diese Therapie?")
+                st.success(d.get("Warum", "Keine Begründung verfügbar"))
+
+                st.markdown("---")
+
+                # ================= RISIKOFAKTOREN =================
+                st.subheader("⚠ Risikofaktoren")
 
     if alter >= 65:
         st.warning("Alter erhöht Risiko")
