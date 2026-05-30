@@ -459,7 +459,12 @@ if seite == "Empfehlungssystem":
 
     # ================= INTERAKTIONEN =================
     st.subheader("💊 Interaktionen")
-    st.info(d.get("Interaktionen", "Keine Interaktionen bekannt"))
+    st.info(
+    locals().get("d", {}).get(
+        "Interaktionen",
+        "Keine Interaktionen bekannt"
+    )
+)
 
     st.markdown("---")
 
